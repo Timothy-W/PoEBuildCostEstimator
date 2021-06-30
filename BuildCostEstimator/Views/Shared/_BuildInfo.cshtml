@@ -1,0 +1,28 @@
+﻿@model BuildCostEstimator.Models.Build
+
+@{
+    // Variables
+    var localImageUrl = "~/images/ascendancy/" + Model.Ascendancy + "_ascendancy_class.webp";
+    //Fix for browsers with no webp support
+
+}
+
+<div class="card text-white bg-primary mb-3" style="max-width: 100rem; align-content: center;">
+
+    <div class="card-header"></div>
+    <div class="card-body">
+        <div class=" h-100 d-flex justify-content-center align-items-center">
+            <div style="float:left; display: inline-block; ">
+                <img alt="Image Not Found" src="@Url.Content(localImageUrl)" type="image/webp" />
+            </div>
+
+            <div style="float: left;  margin-left:30px; display: inline-block;">
+                <h4 class="card-title"> Class: @Model.Class</h4>
+                <h4 class="card-title"> Ascendancy: @Model.Ascendancy</h4>
+                <p class="card-text">Pastebin Link: @Model.Url.PastebinUrl</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+

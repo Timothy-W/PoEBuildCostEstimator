@@ -1,0 +1,29 @@
+﻿@model BuildCostEstimator.Models.ViewModels.ProcessingErrorViewModel
+
+@{
+    ViewData["Title"] = "Error During Processing";
+}
+
+<h1>An error ocured while processing your build</h1>
+
+<div>
+    <h4>Error</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PastebinLink)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PastebinLink)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Go back to main page</a>
+</div>
