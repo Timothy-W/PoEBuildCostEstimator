@@ -59,7 +59,7 @@ namespace BuildCostEstimator
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
-            var client = new SecretClient(new Uri("https://buildcostesttestvault.vault.azure.net/"),
+            var client = new SecretClient(new Uri("https://poebceproductionvault.vault.azure.net/"),
                 new DefaultAzureCredential());
             KeyVaultSecret secret = client.GetSecret("ConnectionStrings");
             services.AddDbContext<ApplicationDbContext>(options => { options.UseSqlServer(secret.Value); });
