@@ -1,0 +1,34 @@
+﻿@model BuildCostEstimator.Models.PastebinLink
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-5">Path of Exile</h1>
+    <h2 class="display-5">Build Cost Estimator</h2>
+</div>
+
+<br />
+<br />
+<div>
+    <form method="post">
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div><!-- Validations-->
+            <div class="form-group row">
+                <div class="col-2">
+                    <label>&nbsp;</label> <!-- Why the fuck do I need this?....-->
+                </div>
+                <div class="col-6">
+                    <input asp-for="PastebinUrl" class="form-control" value="https://pastebin.com/7nhJbxk4" style="color: darkgrey" placeholder="https://pastebin.com/7nhJbxk4"/>
+                    <!-- Validations based on model-->
+                    <span asp-validation-for="PastebinUrl" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-warning form-control">Go</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

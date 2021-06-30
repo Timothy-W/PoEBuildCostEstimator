@@ -1,0 +1,61 @@
+﻿@model BuildCostEstimator.Models.Build
+
+@{
+    ViewData["Title"] = "Results";
+    var itemSets = Model.ItemSets;
+}
+
+<div>
+    <partial name="_BuildInfo" model="Model" />
+</div>
+
+<ul class="nav nav-tabs">
+    <!--Loops over and generate the html for each ItemSet-->
+    @if (itemSets.Any())
+    {
+        var modelArray = itemSets.ToArray();
+
+        @for (int i = 0; i < modelArray.Count(); i++)
+        {
+            var hrefName = '#' + modelArray[i].ItemSetTitle.ToLower().Replace(" ", "");
+            if (i == 0)
+            {
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="@hrefName">@modelArray[i].ItemSetTitle</a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="@hrefName">@modelArray[i].ItemSetTitle</a>
+                </li>
+            }
+        }
+    }
+</ul>
+<div id="myTabContent" class="tab-content">
+
+    @if (itemSets.Any())
+    {
+        var modelArray = itemSets.ToArray();
+
+        @for (int i = 0; i < modelArray.Count(); i++)
+        {
+            var hrefName = modelArray[i].ItemSetTitle.ToLower().Replace(" ", "");
+            if (i == 0)
+            {
+                <div class="tab-pane active fade show" id="@hrefName">
+                    <partial name="_ItemSet" model="modelArray[i]" />
+                </div>
+            }
+            else
+            {
+                <div class="tab-pane fade show" id="@hrefName">
+                    <partial name="_ItemSet" model="modelArray[i]" />
+                </div>
+            }
+        }
+    }
+
+</div>
+
