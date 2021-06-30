@@ -16,9 +16,10 @@ namespace BuildCostEstimator.Models.CustomValidations
     public class ValidPastebinLinkFormatAttribute : ValidationAttribute
     {
         //Check if input has "https://pastebin.com/" or "http://pastebin.com/"
-        public string GetErrorMessageDomain() => "Link is not a pastebin link, should be: 'http(s)://pastebin.com/xxxxxxxx'.";
+        public string GetErrorMessageDomain() => "Link is not a Pastebin link, should be: 'http(s)://pastebin.com/xxxxxxxx'.";
         public string GetErrorMessageLinkNotFound(string link) => $"{link} returned '404, Not Found', verify link is valid and try again.";
-        public string GetErrorMessageRawLink() => "Raw pastebin links are not supported.";
+        public string GetErrorMessageRawLink() => "Raw Pastebin links are not supported.";
+        public string GetErrorMessageNotHttp() => "Pastebin link is not valid. Link should begin with 'http://' or 'https://'.";
 
         private IHttpClientFactory _clientFactory;
 
@@ -31,11 +32,26 @@ namespace BuildCostEstimator.Models.CustomValidations
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var link = (PastebinLink)validationContext.ObjectInstance;
-            
+
+
+            string uriString = link.PastebinUrl.TrimStart().TrimEnd();
+
+
+
+            //Check for http or http:
+            var isHttpOrHttps = uriString is string valueAsString &&
+                                (valueAsString.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+                                 || valueAsString.StartsWith("https://", StringComparison.OrdinalIgnoreCase));
+
+            if (!isHttpOrHttps)
+            {
+                return new ValidationResult(GetErrorMessageNotHttp());
+            }
+
 
             // Check for valid formatting
-            var validFormat = link.PastebinUrl.Contains("https://pastebin.com/") ||
-                        link.PastebinUrl.Contains("http://pastebin.com/");
+            var validFormat = uriString.Contains("https://pastebin.com/") ||
+                              uriString.Contains("http://pastebin.com/");
 
             if (!validFormat)
             {
@@ -43,7 +59,7 @@ namespace BuildCostEstimator.Models.CustomValidations
             }
 
             // Check link is not raw link
-            var isRawLink = !link.PastebinUrl.Contains("raw");
+            var isRawLink = !uriString.Contains("raw");
 
             if (!isRawLink)
             {
@@ -77,7 +93,7 @@ namespace BuildCostEstimator.Models.CustomValidations
             try
             {
                 using var client = new WebClient();
-                using var stream = client.OpenRead(link.PastebinUrl);
+                using var stream = client.OpenRead(uriString);
             }
             catch (WebException wex)
             {

@@ -15,9 +15,9 @@ namespace BuildCostEstimator.Models
 
         [Display(Name = "Pastebin Link")]
         [Required(ErrorMessage = "Please enter a pastebin link.")]
-        [Url, ValidPastebinLinkFormat]
+        [ValidPastebinLinkFormat]
         [MinLength(28)]
-        [MaxLength(29)] // Length of "https://pastebin.com/FWxkVUqG"
+        [MaxLength(35)] // Length of "https://pastebin.com/FWxkVUqG" plus some room for accidental spaces
         public string PastebinUrl { get; set; }
     }
 }

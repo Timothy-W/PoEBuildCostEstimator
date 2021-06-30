@@ -33,6 +33,9 @@ namespace BuildCostEstimator.Areas.User.Controllers
         {
             if (ModelState.IsValid) // checks if validations from model are true. Server side validation, sorta
             {
+
+                newLink.PastebinUrl = newLink.PastebinUrl.TrimStart().TrimEnd();
+
                 var existingLink =
                     _unitOfWork.PastebinLinks.GetFirstOrDefault(x => x.PastebinUrl == newLink.PastebinUrl);
 
