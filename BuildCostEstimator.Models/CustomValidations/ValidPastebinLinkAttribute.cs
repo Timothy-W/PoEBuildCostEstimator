@@ -16,6 +16,7 @@ namespace BuildCostEstimator.Models.CustomValidations
     public class ValidPastebinLinkFormatAttribute : ValidationAttribute
     {
         //Check if input has "https://pastebin.com/" or "http://pastebin.com/"
+        public string GetErrorMessageNoInput() => "Please enter a pastebin link.";
         public string GetErrorMessageDomain() => "Link is not a Pastebin link, should be: 'http(s)://pastebin.com/xxxxxxxx'.";
         public string GetErrorMessageLinkNotFound(string link) => $"{link} returned '404, Not Found', verify link is valid and try again.";
         public string GetErrorMessageRawLink() => "Raw Pastebin links are not supported.";
@@ -32,6 +33,11 @@ namespace BuildCostEstimator.Models.CustomValidations
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var link = (PastebinLink)validationContext.ObjectInstance;
+
+            if (link.PastebinUrl == null)
+            {
+                return new ValidationResult(GetErrorMessageNoInput());
+            }
 
 
             string uriString = link.PastebinUrl.TrimStart().TrimEnd();
