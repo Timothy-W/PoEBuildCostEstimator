@@ -20,15 +20,20 @@
                     <label>&nbsp;</label> <!-- Why the fuck do I need this?....-->
                 </div>
                 <div class="col-6">
-                    <input asp-for="PastebinUrl" class="form-control" value="https://pastebin.com/7nhJbxk4" style="color: darkgrey" placeholder="Paste link here."/>
+                    <input asp-for="PastebinUrl" class="form-control" style="color: darkgrey" placeholder="Paste link here." id="pastebinUrlInputForm" onchange="SetButtonTextToGo()" />
                     <!-- Validations based on model-->
                     <span asp-validation-for="PastebinUrl" class="text-danger"></span>
                 </div>
                 <div class="col-2">
-                    <button type="submit" class="btn btn-warning form-control">Go</button>
+                    <button type="submit" id="pastebinSubmitButton" class="btn btn-warning form-control">Test</button>
                 </div>
             </div>
         </div>
 
     </form>
 </div>
+
+@section Scripts
+{
+    <script src="~/js/home.js"></script>
+}
