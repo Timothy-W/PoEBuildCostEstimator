@@ -14,11 +14,13 @@ namespace BuildCostEstimator.Utilities
             if (item == null)
                 return null;
 
+            if (item.BaseType == "Rustic Sash" || item.BaseType == "Leather Belt")
+            {
+                return "Accessory";
+            }
+
+
             var itemBaseType = item.BaseType;
-
-            if (itemBaseType.Contains("Flask")) { return "Flask"; }
-            if (itemBaseType.Contains("Jewel")) { return "Jewel"; }
-
 
             var splitBaseTypeString = itemBaseType.Split(" ").ToHashSet();
 
@@ -26,6 +28,11 @@ namespace BuildCostEstimator.Utilities
             if (splitBaseTypeString.Intersect(StaticDetails.ArmourCategories).Any()) { return "Armour"; }
             if (splitBaseTypeString.Intersect(StaticDetails.AccessoryCategories).Any()) { return "Accessory"; }
            
+            if (itemBaseType.Contains("Jewel")) { return "Jewel"; }
+            if (itemBaseType.Contains("Flask")) { return "Flask"; }
+
+            
+
             return "Unknown";
 
         }
