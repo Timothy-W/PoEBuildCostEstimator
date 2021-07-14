@@ -6,7 +6,7 @@ $('#pastebinUrlInputForm').on('input', function () {
         $('#pastebinSubmitButton').text('Go');
 
     } else {
-        $('#pastebinSubmitButton').text('Test');
+        $('#pastebinSubmitButton').text('Demo');
     }
 });
 
