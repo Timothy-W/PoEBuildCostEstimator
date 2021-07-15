@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using BuildCostEstimator.BuildFileProcessor.Parsers;
 using BuildCostEstimator.Models;
 using BuildCostEstimator.Tests.XmlParser.ItemTests;
-using BuildCostEstimator.Utilities;
+using BuildCostEstimator.Utilities.Extensions;
 using Xunit;
 
 namespace BuildCostEstimator.Tests.ExtensionMethodTest

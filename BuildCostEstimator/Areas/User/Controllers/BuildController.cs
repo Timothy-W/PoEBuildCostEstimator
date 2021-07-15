@@ -48,11 +48,7 @@ namespace BuildCostEstimator.Areas.User.Controllers
                         _unitOfWork.ItemSetRelationships.GetAll(x => x.ItemSetId == set.Id, null,"ItemSet,Item").ToList();
                 }
 
-                if (build != null)
-                {
-                    return View(build);
-                    
-                }
+                return View(build);
 
             }
             

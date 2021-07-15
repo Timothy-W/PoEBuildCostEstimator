@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BuildCostEstimator.Models;
 
-namespace BuildCostEstimator.Utilities
+namespace BuildCostEstimator.Utilities.Extensions
 {
     public static class ItemExtensionMethods
     {

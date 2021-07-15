@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using BuildCostEstimator.Models;
 using BuildCostEstimator.Models.PoePricesModels;
 using BuildCostEstimator.PriceCheck.Interfaces;
-using BuildCostEstimator.Utilities;
+using BuildCostEstimator.Utilities.Extensions;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace BuildCostEstimator.PriceCheck

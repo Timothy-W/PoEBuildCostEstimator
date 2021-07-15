@@ -36,7 +36,7 @@
     <ProjectReference Include="..\BuildCostEstimator.BuildFileProcessor\BuildCostEstimator.BuildFileProcessor.csproj" />
     <ProjectReference Include="..\BuildCostEstimator.DataAccess\BuildCostEstimator.DataAccess.csproj" />
     <ProjectReference Include="..\BuildCostEstimator.Models\BuildCostEstimator.Models.csproj" />
-    <ProjectReference Include="..\BuildCostEstimator.Utility\BuildCostEstimator.Utilities.csproj" />
+    <ProjectReference Include="..\BuildCostEstimator.Utilities\BuildCostEstimator.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

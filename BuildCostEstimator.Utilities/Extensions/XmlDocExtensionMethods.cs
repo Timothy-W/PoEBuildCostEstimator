@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using BuildCostEstimator.Models;
 
-namespace BuildCostEstimator.Utilities
+namespace BuildCostEstimator.Utilities.Extensions
 {
     public static class XmlDocExtensionMethods
     { 
