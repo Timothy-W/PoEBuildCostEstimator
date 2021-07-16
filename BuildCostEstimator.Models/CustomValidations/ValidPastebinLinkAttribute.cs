@@ -21,10 +21,10 @@ namespace BuildCostEstimator.Models.CustomValidations
         public string GetErrorMessageLinkNotFound(string link) => $"{link} returned '404, Not Found', verify link is valid and try again.";
         public string GetErrorMessageRawLink() => "Raw Pastebin links are not supported.";
         public string GetErrorMessageNotHttp() => "Pastebin link is not valid. Link should begin with 'http://' or 'https://'.";
-
-        private IHttpClientFactory _clientFactory;
-
+        
         // Cleaner solution but need to figure out how to inject IHttpClientFactory dependency
+        //private IHttpClientFactory _clientFactory;
+
         //ValidPastebinLinkFormatAttribute(IHttpClientFactory clientFactory)
         //{
         //    _clientFactory = clientFactory;

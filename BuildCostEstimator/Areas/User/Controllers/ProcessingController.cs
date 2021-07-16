@@ -2,24 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Schema;
-using BuildCostEstimator.BuildFileProcessor;
-using BuildCostEstimator.BuildFileProcessor.Factories;
-using BuildCostEstimator.DataAccess.Migrations;
 using BuildCostEstimator.DataAccess.Repository.IRepository;
 using BuildCostEstimator.Models.ViewModels;
 using BuildCostEstimator.PriceCheck;
 using BuildCostEstimator.Utilities;
+using BuildCostEstimator.Utilities.Extensions;
 using Microsoft.Extensions.Caching.Memory;
 
 
