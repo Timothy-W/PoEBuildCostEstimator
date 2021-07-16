@@ -14,8 +14,8 @@ using BuildCostEstimator.DataAccess.Repository.IRepository;
 using BuildCostEstimator.Models.ViewModels;
 using BuildCostEstimator.PriceCheck;
 using BuildCostEstimator.Utilities;
-
-
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 namespace BuildCostEstimator.Areas.User.Controllers
@@ -58,7 +58,31 @@ namespace BuildCostEstimator.Areas.User.Controllers
            
         }
 
-        
+        [HttpPost]
+        public IActionResult GetItemsInSetWithIdOf(int id)
+        {
+            var itemSet = _unitOfWork.ItemSets.GetFirstOrDefault(x => x.Id == id,"ItemSetRelationships");
+
+            List<Item> itemsInSet = new List<Item>();
+            //query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Reference))
+            foreach (var relationship in itemSet.ItemSetRelationships)
+            {
+                var item = _unitOfWork.Items.Get(relationship.ItemId);
+                if (item != null){
+                    itemsInSet.Add(_unitOfWork.Items.Get(relationship.ItemId));
+                }
+            }
+
+            var data = itemsInSet;
+            //var options = new JsonSerializerOptions();
+            //options.ReferenceHandler = ReferenceHandler.Preserve;
+
+            string output = JsonSerializer.Serialize(data);
+            // Throwing error here. 
+            // Something about cycles in Json. Probably not formatted correctly
+            // Look into using ReferenceHandler.Preserve
+            return Json(new { data = itemsInSet });
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

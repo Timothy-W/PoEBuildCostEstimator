@@ -1,5 +1,75 @@
 ﻿@model BuildCostEstimator.Models.ItemSet
 
-<table>
-    <partial name="_ItemTable" model="Model.ItemSetRelationships.Select(x => x.Item).ToList()" />
-</table>
+
+@{
+    double totalCost = 0.0;
+
+    foreach (var relationship in Model.ItemSetRelationships)
+    {
+        totalCost += relationship.Item.CostInChaos;
+    }
+
+    string itemSetTableRef = "tblData" + Model.Id;
+}
+
+
+@*
+    <table>
+        <partial name="_ItemTable" model="Model.ItemSetRelationships.Select(x => x.Item).ToList()" />
+    </table>
+*@
+
+<div class="p-4 border rounded">
+    <table id=@itemSetTableRef class="table table-striped table-bordered table-dark" style="width: 100%">
+        <tr>
+            Total Cost: @Math.Ceiling(totalCost) Chaos
+        </tr>
+        <thead class="table-primary">
+        <th>Cost (Chaos)</th>
+        <th>Name</th>
+        <th>Base Type</th>
+        <th>Rarity</th>
+        </thead>
+        <tbody>
+            <script>
+                
+                var currTableId = '#tblData' + @Model.Id.ToString();
+
+                var dataTable = $(currTableId).DataTable({
+                    paging: false,
+                    responsive: true,
+                    processing: true,
+                    fixedHeader: {
+                        header: true,
+                        footer: false
+                    },
+
+
+                    // Using ajax call
+                    ajax: {
+                        "type": "POST",
+                        "url": "/User/Build/GetItemsInSetWithIdOf",
+                        "dataType": "json",
+                        "data": {id:@Model.Id}
+                    },
+                    //Define columns
+                    columns: [
+                        //"name" here is the name of the property in the category model class which is "Name" (public string Name).
+                        // We MUST convert it to camel casing.
+                        { "data": "costInChaos", "width": "10%" },
+                        { "data": "name", "width": "35%" },
+                        { "data": "baseType", "width": "20%" },
+                        { "data": "rarity", "width": "10%" },
+
+                    ]
+
+                });
+
+            </script>
+        </tbody>
+    </table>
+
+</div>
+
+
+

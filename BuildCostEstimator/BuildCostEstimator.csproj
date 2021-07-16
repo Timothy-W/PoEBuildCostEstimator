@@ -43,6 +43,7 @@
     <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="Properties\ServiceDependencies\" />
     <Folder Include="Properties\ServiceDependencies\local\" />
+    <Folder Include="wwwroot\lib\datatables\" />
   </ItemGroup>
 
 </Project>
