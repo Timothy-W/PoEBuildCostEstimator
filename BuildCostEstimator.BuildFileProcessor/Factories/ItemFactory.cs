@@ -17,7 +17,7 @@ namespace BuildCostEstimator.BuildFileProcessor.Factories
         public ItemFactory()
         {
             // Make more dynamic, maybe with reflection
-            stringParsers = new List<IParser<string>>() { new NameParser(), new BaseTypeParser(), new RarityParser(), new SocketsParser(), new InfluencesParser() };
+            stringParsers = new List<IParser<string>>() { new NameParser(), new BaseTypeParser(), new RarityParser(), new SocketsParser(), new InfluencesParser(), new ImplicitModsParser() };
             intParsers = new List<IParser<int>>() { new PobItemIdParser(), new ItemLevelParser(), new LevelReqParser() };
         }
 
