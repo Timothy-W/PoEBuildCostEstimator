@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using BuildCostEstimator.Models;
 
@@ -39,37 +40,69 @@ namespace BuildCostEstimator.Utilities.Extensions
 
         public static string RawText(this Item item)
         {
-            //return
-            //    "Item Class: Body Armours\r\n"
-            //        + "Rarity: Rare\r\n"
-            //        + "Skull Guardian\r\n"
-            //        + "Crypt Armour\r\n"
-            //        + "--------\r\n"
-            //        + "Evasion Rating: 339 (augmented)\r\n"
-            //        + "Energy Shield: 66 (augmented)\r\n"
-            //        + "--------\r\n"
-            //        + "Requirements:\r\n"
-            //        + "Level: 70\r\n"
-            //        + "--------\r\n"
-            //        + "Sockets: G-R-B-B-R-B \r\n"
-            //        + "--------\r\n"
-            //        + "Item Level: 57\r\n"
-            //        + "--------\r\n"
-            //        + "{ Prefix Modifier \"Opalescent\" (Tier: 6) — Mana }\r\n"
-            //        + "+49(45-49) to maximum Mana\r\n"
-            //        + "{ Prefix Modifier \"Stalwart\" (Tier: 10) — Life }\r\n"
-            //        + "+38(30-39) to maximum Life\r\n"
-            //        + "{ Prefix Modifier \"Mosquito's\" (Tier: 6) — Defences }\r\n"
-            //        + "10(6-13)% increased Evasion and Energy Shield\r\n"
-            //        + "6(6-7)% increased Stun and Block Recovery\r\n"
-            //        + "{ Suffix Modifier \"of the Sage\" (Tier: 4) — Attribute }\r\n"
-            //        + "+36(33-37) to Intelligence\r\n"
-            //        + "{ Suffix Modifier \"of the Yeti\" (Tier: 5) — Elemental, Cold, Resistance }\r\n"
-            //        + "+26(24-29)% to Cold Resistance\r\n"
-            //        + "{ Suffix Modifier \"of Adamantite Skin\" (Tier: 2) }\r\n"
-            //        + "23(23-25)% increased Stun and Block Recovery\r\n"
-            //        + "--------\r\n"
-            //        + "Corrupted";
+            /*
+
+                Item Class: Boots
+                Rarity: Rare
+                Spirit Urge
+                Sharkskin Boots
+                --------
+                Quality: +20% (augmented)
+                Evasion Rating: 268 (augmented)
+                --------
+                Requirements:
+                Level: 68
+                Str: 106
+                Dex: 151
+                --------
+                Sockets: G-R-R-G 
+                --------
+                Item Level: 62
+                --------
+                50% increased Mana Regeneration Rate if you've cast a Spell Recently (enchant)
+                        (Recently refers to the past 4 seconds) (enchant)
+                --------
+                65% increased Evasion Rating
+                15% increased Movement Speed (crafted)
+                22% increased Stun and Block Recovery
+                +34% to Lightning Resistance
+                +23% to Cold Resistance
+
+            
+            
+
+                Item Class: Boots
+                Rarity: Rare
+                Pain Sole
+                Vaal Greaves
+                --------
+                Quality: +20% (augmented)
+                Armour: 334 (augmented)
+                --------
+                Requirements:
+                Level: 62
+                Str: 117
+                --------
+                Sockets: R-R-G-R 
+                --------
+                Item Level: 77
+                --------
+                120% increased Critical Strike Chance if you haven't Crit Recently
+                --------
+                32% increased Armour
+                +86 to maximum Life
+                +43% to Fire Resistance
+                +45% to Cold Resistance
+                30% increased Movement Speed
+                +27% to Lightning Resistance (crafted)
+
+            
+             */
+
+
+
+
+
 
             StringBuilder rawText = new StringBuilder();
 
@@ -118,6 +151,21 @@ namespace BuildCostEstimator.Utilities.Extensions
                 rawText.Append($"Item Level: {item.ItemLevel}\r\n");
                 rawText.Append("--------\r\n");
             }
+            #endregion
+
+            #region Implicit Modifiers
+
+            if (item.ImplicitMods != "[]")
+            {
+                var list = JsonSerializer.Deserialize<List<string>>(item.ImplicitMods);
+
+                foreach (var mod in list)
+                {
+                    rawText.Append(mod + "\n");
+                }
+                rawText.Append("--------\r\n");
+            }
+
             #endregion
 
             #region Prefixes
