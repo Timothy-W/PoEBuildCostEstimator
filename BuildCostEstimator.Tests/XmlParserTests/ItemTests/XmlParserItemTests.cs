@@ -130,6 +130,22 @@ namespace BuildCostEstimator.Tests.XmlParserTests.ItemTests
             Assert.Equal(expected, actual);
         }
 
+        [Theory]
+        [ClassData(typeof(XmlParserItemTestData))]
+        public void Parse_ShouldReturnImplicitModsFromItemXml(ItemXmlHelper testCase)
+        {
+            // Arrange
+            ImplicitModsParser parser = new ImplicitModsParser();
+            string expected = testCase.Item.ImplicitMods;
+
+            // Act
+            string actual = parser.Parse(testCase.Xml);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+
 
     }
 }
