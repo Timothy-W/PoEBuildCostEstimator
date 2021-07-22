@@ -45,6 +45,10 @@ namespace BuildCostEstimator.Models
         [Display(Name = "Influences")] 
         public string Influences { get; set; }
 
+        [Display(Name = "Implicit Modifiers")] 
+        public string ImplicitMods { get; set; }
+
+
         [JsonIgnore]
         public IList<ItemSetRelationship> ItemSetRelationships { get; set; } = new List<ItemSetRelationship>();
 
