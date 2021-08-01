@@ -66,13 +66,13 @@ namespace BuildCostEstimator.Areas.User.Controllers
 
 
             // Add Item objects to database
-            var itemList = builditemSets.SelectMany(
-                x => x.ItemSetRelationships).Select(x => x.Item);
+            var itemSetRelationshipList = builditemSets.SelectMany(x => x.ItemSetRelationships).ToList();
+            var itemList = itemSetRelationshipList.Select(x => x.Item);
             var itemPobIdToDbIdMapping = AddedItemsToDb(itemList);
         
 
             List<Tuple<int, int>> itemPobIdToitemSetXmlIdMapping = GetPobItemIdToItemSetXmlIdMapping(
-                builditemSets.SelectMany(x => x.ItemSetRelationships));
+                itemSetRelationshipList);
 
 
             // Add Build object to database
@@ -134,6 +134,9 @@ namespace BuildCostEstimator.Areas.User.Controllers
                     && x.Rarity == item.Rarity
                     && x.Sockets == item.Sockets
                     && x.Influences == item.Influences
+                    && x.ImplicitMods == item.ImplicitMods
+                    && x.AffixMods == item.AffixMods
+                    && x.IsCorrupted == item.IsCorrupted
                 );
 
                 if (existingItem != null)
