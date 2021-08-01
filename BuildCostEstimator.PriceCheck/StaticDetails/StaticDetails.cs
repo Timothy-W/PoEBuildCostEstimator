@@ -14,8 +14,8 @@ namespace BuildCostEstimator.PriceCheck
         public const string Rare = "Rare";
         public const string Unique = "Unique";
 
-        //public const string League = "Expedition";
-        public const string League = "Standard";
+        public const string League = "Expedition";
+        //public const string League = "Standard";
 
         // Poe Ninja url
         public const string PoeNinjaUrl = "https://poe.ninja/api/data/itemoverview?";
