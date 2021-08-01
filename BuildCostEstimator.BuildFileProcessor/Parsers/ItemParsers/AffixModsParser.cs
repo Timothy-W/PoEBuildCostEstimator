@@ -9,13 +9,16 @@ using System.Xml.Linq;
 
 namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
-    public class ImplicitModsParser : IParser<string>
+    public class AffixModsParser : IParser<string>
     {
-        readonly string emptyMods = "[]";
-        readonly string craftedString = "{crafted}";
-        readonly string tagString = "{tags:";
-        readonly string rangeString = "{range:";
-        readonly string variantString = "{variant:";
+
+        private readonly string emptyMods = "[]";
+        private readonly string craftedString = "{crafted}";
+        private readonly string tagString = "{tags:";
+        private readonly string rangeString = "{range:";
+        private readonly string variantString = "{variant:";
+        private readonly List<string> endOfAffixIndicators = new() {"-", "Corrupted","updated"};
+
 
         /// <summary>
         /// Parses XElement for Name of item.
@@ -27,7 +30,7 @@ namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
             bool itemHasVariants = false;
 
             var eleSplitByLine = element.Value.Trim().Split("\n").Select(x => x.Trim()).ToList();
-            var indexOfImplicitLine = eleSplitByLine.FindIndex(x => x.Contains("Implicits:")); // what if this is not found?
+            var indexOfImplicitLine = eleSplitByLine.FindIndex(x => x.Contains("Implicits: ")); // what if this is not found?
 
             if (indexOfImplicitLine == -1)
             {
@@ -36,56 +39,70 @@ namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 
             var implicitLineText = eleSplitByLine[indexOfImplicitLine];
 
+            
+            var implicitNumStr = implicitLineText.Replace("Implicits:", "").Trim();
 
-            if (!int.TryParse(implicitLineText.Replace("Implicits:", "").Trim(), out var numOfImplicitMods))
+            if (!int.TryParse(implicitNumStr, out var numOfImplicitMods))
             {
                 return emptyMods;
             }
 
-            if (numOfImplicitMods == 0)
-            {
-                return emptyMods;
-            }
+      
 
 
-            var selectedVariantText = eleSplitByLine.FirstOrDefault(x => x.Contains("Selected Variant:"));
+            var selectedVariantStr = eleSplitByLine.FirstOrDefault(x => x.Contains("Selected Variant:"));
             var selectedVariantVal = "";
-            if (selectedVariantText != null)
+            if (selectedVariantStr != null)
             {
                 itemHasVariants = true;
-                selectedVariantVal = selectedVariantText.Split(":").Last().Trim();
+                selectedVariantVal = selectedVariantStr.Split(":").Last().Trim();
             }
 
-            List<string> allImplicitMods = new List<string>();
+            var affixStartIndex = indexOfImplicitLine + numOfImplicitMods + 1;
+            
+            List<string> preFilteredAffixMods = eleSplitByLine.GetRange(affixStartIndex, eleSplitByLine.Count - affixStartIndex);
+            List<string> allAffixMods = new List<string>();
 
-            for (int i = 0; i < numOfImplicitMods; i++)
+            foreach (var mod in preFilteredAffixMods)
             {
-                allImplicitMods.Add(eleSplitByLine[indexOfImplicitLine + 1 + i]);
+                var splitMod = mod.Split(" ");
+
+                if (splitMod.Intersect(endOfAffixIndicators).Any())
+                {
+                    break;
+                }
+                allAffixMods.Add(mod);
             }
+
 
             if (itemHasVariants)
             {
-                allImplicitMods = FilterVariants(allImplicitMods, selectedVariantVal);
+                allAffixMods = FilterVariants(allAffixMods, selectedVariantVal);
             }
+
+
+
+
 
             StringBuilder sb = new StringBuilder();
             sb.Append("[");
 
-            foreach (var mod in allImplicitMods)
+            foreach (var mod in allAffixMods)
             {
-                sb.Append("\"");
-                var implicitMod = mod;
-
-                implicitMod = HandleCraftedTag(implicitMod);
-                implicitMod = HandleStatTypeTag(implicitMod);
-                implicitMod = RemoveVariantString(implicitMod);
-                implicitMod = HandleRangeTag(implicitMod);
-
-                sb.Append(implicitMod);
 
                 sb.Append("\"");
+                var affixMod = mod;
 
-                if (!mod.Equals(allImplicitMods.Last()))
+                affixMod = HandleCraftedTag(affixMod);
+                affixMod = HandleStatTypeTag(affixMod);
+                affixMod = RemoveVariantString(affixMod);
+                affixMod = HandleRangeTag(affixMod);
+
+                sb.Append(affixMod);
+
+                sb.Append("\"");
+
+                if (!mod.Equals(allAffixMods.Last()))
                 {
                     sb.Append(",");
                 }
@@ -94,7 +111,6 @@ namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 
             sb.Append("]");
             return sb.ToString();
-
         }
 
         private List<string> FilterVariants(List<string> allImplicitMods, string selectedVariantVal)
@@ -114,6 +130,9 @@ namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
             return newList;
         }
 
+
+
+        
         private string HandleRangeTag(string implicitMod)
         {
             if (implicitMod.Contains(rangeString))
@@ -164,14 +183,15 @@ namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
         // {range:1}(5-7)% increased maximum Life
         // {range:0.5}+(8-12) to all Elemental Resistances
         // {range:0.5}(15-25)%
-        // {range:0}Non-Channelling Skills have -(9-8) to Total Mana Cost <-- Might not need to handle
+        // {range:0}Non-Channelling Skills have -(9-8) to Total Mana Cost <-- Might not need to handle <-- Why? <--- ???
+        // {range:0.5}75% chance to cause Enemies to Flee on use <-- edge case
         string TransformRange(string mod)
         {
             if (!mod.Contains(rangeString))
                 return mod;
 
             var result = mod.Trim();
-            var isAdditiveStat = result.Contains("+");
+            var isAdditiveStat = result.Contains("+") || result.Contains("%");
             
             var rangeValueStr = result.Substring(result.IndexOf('{'), result.IndexOf('}')).Replace(rangeString, ""); ;
 
@@ -182,6 +202,13 @@ namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
             }
 
             result = result.Remove(result.IndexOf('{'), result.IndexOf('}') + 1);
+
+            if (!result.Contains('('))
+            {
+                // For whatever reason, no actual range to parse
+                // Ex. Lion's Road Granite Flask
+                return result;
+            }
 
             var minMaxValuesStr = result.Split('(', ')')[1];
             var minMaxValues = minMaxValuesStr.Split('-');
@@ -201,7 +228,9 @@ namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
             // took ceiling of ---> Prefix: {range:0.521}+(80-89) to maximum Life
             // took floor of ---> {range:0.524}-(20-10)% to all Elemental Resistances
             //
-            // Maybe ceiling of position stats, floor of negative stats?
+            // Maybe ceiling of position stats, floor of negative stats? Ceiling for %?
+            // 
+            // Need to explore Non-channelling stats and how they are properly calcualted
             //
             //Need more samples
             val = isAdditiveStat ? Math.Ceiling(val) : Math.Floor(val);

@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace BuildCostEstimator.BuildFileProcessor.Parsers
+namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
     public class NameParser : IParser<string>
     {
@@ -14,15 +14,15 @@ namespace BuildCostEstimator.BuildFileProcessor.Parsers
         /// <returns>Name of item as string.</returns>
         public string Parse(XElement element)
         {
-            var eleSplitByLine =  element.Value.Trim().Split("\n").Select(x => x.Trim()).ToArray();
+            var eleSplitByLine = element.Value.Trim().Split("\n").Select(x => x.Trim()).ToArray();
 
             var name = eleSplitByLine.ElementAt(1);
-            
+
             // Handles issue with names starting with "^2"
-            name = name.Replace("^2", ""); 
+            name = name.Replace("^2", "");
 
             // Not sure how to do this without magic numbers
-            return name; 
+            return name;
         }
     }
 }

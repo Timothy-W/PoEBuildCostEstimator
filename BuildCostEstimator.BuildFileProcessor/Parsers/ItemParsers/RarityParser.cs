@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace BuildCostEstimator.BuildFileProcessor.Parsers
+namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
     public class RarityParser : IParser<string>
     {

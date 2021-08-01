@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace BuildCostEstimator.BuildFileProcessor.Parsers
+namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
     public class InfluencesParser : IParser<string>
     {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace BuildCostEstimator.BuildFileProcessor.Parsers
+namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
     public class LevelReqParser : IParser<int>
     {

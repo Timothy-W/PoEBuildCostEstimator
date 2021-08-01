@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace BuildCostEstimator.BuildFileProcessor.Parsers
+namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
      /// <summary>
      /// Parses XElement for base type of item.
