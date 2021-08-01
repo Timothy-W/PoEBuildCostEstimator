@@ -157,13 +157,13 @@ namespace BuildCostEstimator.Utilities.Extensions
 
             if (item.ImplicitMods != "[]")
             {
-                var list = JsonSerializer.Deserialize<List<string>>(item.ImplicitMods);
+                //var list = JsonSerializer.Deserialize<List<string>>(item.ImplicitMods);
 
-                foreach (var mod in list)
-                {
-                    rawText.Append(mod + "\n");
-                }
-                rawText.Append("--------\r\n");
+                //foreach (var mod in list)
+                //{
+                //    rawText.Append(mod + "\n");
+                //}
+                rawText.Append(DeserializeMods(item.ImplicitMods));
             }
 
             #endregion
@@ -193,6 +193,22 @@ namespace BuildCostEstimator.Utilities.Extensions
 
             #endregion
 
+            #region Affixs
+
+            if (item.AffixMods != "[]")
+            {
+                //var list = JsonSerializer.Deserialize<List<string>>(item.ImplicitMods);
+
+                //foreach (var mod in list)
+                //{
+                //    rawText.Append(mod + "\n");
+                //}
+                rawText.Append(DeserializeMods(item.AffixMods));
+            }
+
+
+            #endregion
+
             #region IsCorrupted
 
             //if (item.IsCorrupted)
@@ -206,6 +222,23 @@ namespace BuildCostEstimator.Utilities.Extensions
 
             return rawText.ToString();
         }
+
+        private static string DeserializeMods(string modsJson)
+        {
+            StringBuilder rawText = new StringBuilder();
+
+
+            var list = JsonSerializer.Deserialize<List<string>>(modsJson);
+
+            foreach (var mod in list)
+            {
+                rawText.Append(mod + "\n");
+            }
+            rawText.Append("--------\r\n");
+
+            return rawText.ToString();
+        }
+
     }
 }
 
