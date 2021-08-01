@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
-using BuildCostEstimator.BuildFileProcessor.Builders;
-using BuildCostEstimator.BuildFileProcessor.Parsers;
 using BuildCostEstimator.BuildFileProcessor.Parsers.Interfaces;
 using BuildCostEstimator.Models;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers;
 
 namespace BuildCostEstimator.BuildFileProcessor.Factories
 {
@@ -17,8 +15,8 @@ namespace BuildCostEstimator.BuildFileProcessor.Factories
         public ItemFactory()
         {
             // Make more dynamic, maybe with reflection
-            stringParsers = new List<IParser<string>>() { new NameParser(), new BaseTypeParser(), new RarityParser(), new SocketsParser(), new InfluencesParser(), new ImplicitModsParser() };
-            intParsers = new List<IParser<int>>() { new PobItemIdParser(), new ItemLevelParser(), new LevelReqParser() };
+            stringParsers = new List<IParser<string>>() { new NameParser(), new BaseTypeParser(), new RarityParser(), new SocketsParser(), new InfluencesParser(), new ImplicitModsParser(), new AffixModsParser() };
+            intParsers = new List<IParser<int>>() { new PobItemIdParser(), new ItemLevelParser(), new LevelReqParser(), new IsCorruptedParser()};
         }
 
 
