@@ -211,10 +211,10 @@ namespace BuildCostEstimator.Utilities.Extensions
 
             #region IsCorrupted
 
-            //if (item.IsCorrupted)
-            //{
-            //    rawText.Append("Corrupted");
-            //}
+            if (item.IsCorrupted == 1)
+            {
+                rawText.Append("Corrupted");
+            }
 
             #endregion
 
