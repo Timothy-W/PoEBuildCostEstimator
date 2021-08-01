@@ -33,6 +33,10 @@ namespace BuildCostEstimator.DataAccess.Repository
                 objFromDb.PobItemId = item.PobItemId;
                 objFromDb.Sockets = item.Sockets;
                 objFromDb.Influences = item.Influences;
+                objFromDb.ImplicitMods = item.ImplicitMods;
+                objFromDb.AffixMods = item.AffixMods;
+                objFromDb.IsCorrupted = item.IsCorrupted;
+
 
             }
         }
