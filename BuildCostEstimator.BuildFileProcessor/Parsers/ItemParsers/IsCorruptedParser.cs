@@ -13,9 +13,9 @@ namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
     /// </summary>
     /// <param name="element">XElement with item tag.</param>
     /// <returns>Base type of item as string.</returns>
-    public class IsCorruptedParser : IParser<int>
+    public class IsCorruptedParser : IntParser
     {
-        public int Parse(XElement element)
+        public override int Parse(XElement element)
         {
             var eleSplitByLine = element.Value.Trim().Split("\n").Select(x => x.Trim()).ToArray();
 

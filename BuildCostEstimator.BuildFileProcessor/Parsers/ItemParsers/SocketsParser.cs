@@ -6,14 +6,14 @@ using System.Xml.Linq;
 
 namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
-    public class SocketsParser : IParser<string>
+    public class SocketsParser : StringParser
     {
         /// <summary>
         /// Parses XElement for Name of item.
         /// </summary>
         /// <param name="element">XElement with item tag.</param>
         /// <returns>Name of item as string.</returns>
-        public string Parse(XElement element)
+        public override string Parse(XElement element)
         {
             var eleSplitByLine = element.Value.Trim().Split("\n").Select(x => x.Trim()).ToArray();
             string sockets = "";

@@ -8,14 +8,14 @@ using System.Xml.Linq;
 
 namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
-    public class ItemLevelParser : IParser<int>
+    public class ItemLevelParser : IntParser
     {
         /// <summary>
         /// Parses XElement for item level of item.
         /// </summary>
         /// <param name="element">XElement with item tag.</param>
         /// <returns>Item level of item as int.</returns>
-        public int Parse(XElement element)
+        public override int Parse(XElement element)
         {
             var elementStrings = element.Value.Trim();
             var eleSplitByLine = elementStrings.Split("\n").Select(x => x.Trim()).ToArray();

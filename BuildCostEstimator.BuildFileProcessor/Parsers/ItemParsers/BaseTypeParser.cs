@@ -8,14 +8,15 @@ using System.Xml.Linq;
 
 namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
-     /// <summary>
+
+    /// <summary>
      /// Parses XElement for base type of item.
      /// </summary>
      /// <param name="element">XElement with item tag.</param>
      /// <returns>Base type of item as string.</returns>
-    public class BaseTypeParser : IParser<string>
+    public class BaseTypeParser : StringParser
     {
-        public string Parse(XElement element)
+        public override string Parse(XElement element)
         {
 
             //TODO Properly handle Magic and Normal items

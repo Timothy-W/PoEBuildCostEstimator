@@ -8,14 +8,14 @@ using System.Xml.Linq;
 
 namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
-    public class PobItemIdParser : IParser<int>
+    public class PobItemIdParser : IntParser
     {
         /// <summary>
         /// Parses XElement for PoB item id of item.
         /// </summary>
         /// <param name="element">XElement with item tag.</param>
         /// <returns>PoB item id of item as int.</returns>
-        public int Parse(XElement element)
+        public override int Parse(XElement element)
         {
             // Should never be null
             return int.Parse(element.Attribute("id").Value);

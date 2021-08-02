@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
-    public class AffixModsParser : IParser<string>
+    public class AffixModsParser : StringParser
     {
 
         private readonly string emptyMods = "[]";
@@ -25,7 +25,7 @@ namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
         /// </summary>
         /// <param name="element">XElement with item tag.</param>
         /// <returns>Name of item as string.</returns>
-        public string Parse(XElement element)
+        public override string Parse(XElement element)
         {
             bool itemHasVariants = false;
 
