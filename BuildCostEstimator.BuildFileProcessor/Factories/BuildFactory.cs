@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections;
-using BuildCostEstimator.BuildFileProcessor.Builders;
-using BuildCostEstimator.BuildFileProcessor.Parsers;
-using BuildCostEstimator.BuildFileProcessor.Parsers.Interfaces;
+﻿using BuildCostEstimator.BuildFileProcessor.Parsers.Interfaces;
 using BuildCostEstimator.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace BuildCostEstimator.BuildFileProcessor.Factories
 {
-    public class BuildFactory : Factory<Build> 
+    public class BuildFactory : Factory<Build>, IFactory<Build>
     {
 
         
@@ -19,11 +16,14 @@ namespace BuildCostEstimator.BuildFileProcessor.Factories
         {
             
             // Make more dynamic, maybe with reflection
-            stringParsers = new List<IParser<string>>() { };
-            intParsers = new List<IParser<int>>() { };    
+            StringParsers = new List<IParser<string>>() { };
+            IntParsers = new List<IParser<int>>() { };    
         }
 
-
+        public override async Task<Build> CreateObjAsync(XElement buildElement)
+        {
+            return await Task.Run(() => CreateObj(buildElement));
+        }
 
 
         public override Build CreateObj(XElement buildElement)
