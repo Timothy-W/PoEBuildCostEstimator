@@ -9,20 +9,21 @@ using System.Xml.Linq;
 
 namespace BuildCostEstimator.BuildFileProcessor.Factories
 {
-    public interface IFactory<out T> where T : class
+    public interface IFactory<T> where T : class
     {
         public T CreateObj(XElement itemElement);
+        public Task<T> CreateObjAsync(XElement itemElement);
     }
 
-    public class Factory<T> : IFactory<T> where T : class, new() //Item obj
+    public abstract class Factory<T> : IFactory<T> where T : class, new() //Item obj
     {
-        public Builder<T> objBuilder { get; set; }
-        public IList<IParser<string>> stringParsers { get; set; }
-        public IList<IParser<int>> intParsers { get; set; }
+        public Builder<T> ObjBuilder { get; set; }
+        public IList<IParser<string>> StringParsers { get; set; }
+        public IList<IParser<int>> IntParsers { get; set; }
 
-        public virtual T CreateObj(XElement itemElement)
-        {
-            return new T();
-        }
+        public abstract T CreateObj(XElement itemElement);
+
+        public abstract Task<T> CreateObjAsync(XElement itemElement);
+    
     }
 }
