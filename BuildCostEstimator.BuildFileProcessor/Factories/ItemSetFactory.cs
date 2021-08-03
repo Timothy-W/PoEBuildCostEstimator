@@ -7,24 +7,27 @@ using BuildCostEstimator.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace BuildCostEstimator.BuildFileProcessor.Factories
 {
-    public class ItemSetFactory : Factory<ItemSet> 
+    public class ItemSetFactory : Factory<ItemSet>, IFactory<ItemSet>
     {
 
         
         // What is using this item factory? The controller? Anther class used by the controller?
         public ItemSetFactory()
         {
-            
             // Make more dynamic, maybe with reflection
-            stringParsers = new List<IParser<string>>() { };
-            intParsers = new List<IParser<int>>() { };    
+            StringParsers = new List<IParser<string>>();
+            IntParsers = new List<IParser<int>>();    
         }
 
-
+        public override async Task<ItemSet> CreateObjAsync(XElement itemSetElement)
+        {
+            return await Task.Run(() => CreateObj(itemSetElement));
+        }
 
 
         public override ItemSet CreateObj(XElement itemSetElement)
@@ -55,6 +58,6 @@ namespace BuildCostEstimator.BuildFileProcessor.Factories
             return newItemSet;
         }
 
-  
+
     }
 }

@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace BuildCostEstimator.BuildFileProcessor.Parsers
+namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
-    public class InfluencesParser : IParser<string>
+    public class InfluencesParser : StringParser
     {
         /// <summary>
         /// Parses XElement for Name of item.
         /// </summary>
         /// <param name="element">XElement with item tag.</param>
         /// <returns>Name of item as string.</returns>
-        public string Parse(XElement element)
+        public override string Parse(XElement element)
         {
             HashSet<string> influencesSet = new HashSet<string>()
             {

@@ -1,5 +1,7 @@
 ﻿using BuildCostEstimator.BuildFileProcessor.Parsers;
+using BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers;
 using BuildCostEstimator.Tests.XmlParser.ItemTests;
+using BuildCostEstimator.Tests.XmlParserTests.ItemTests.TestData;
 using Xunit;
 
 namespace BuildCostEstimator.Tests.XmlParserTests.ItemTests
@@ -129,6 +131,53 @@ namespace BuildCostEstimator.Tests.XmlParserTests.ItemTests
             // Assert
             Assert.Equal(expected, actual);
         }
+
+        [Theory]
+        [ClassData(typeof(XmlParserItemTestData))]
+        public void Parse_ShouldReturnImplicitModsFromItemXml(ItemXmlHelper testCase)
+        {
+            // Arrange
+            ImplicitModsParser parser = new ImplicitModsParser();
+            string expected = testCase.Item.ImplicitMods;
+
+            // Act
+            string actual = parser.Parse(testCase.Xml);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [ClassData(typeof(XmlParserItemTestData))]
+        public void Parse_ShouldReturnIsCorruptedFromItemXml(ItemXmlHelper testCase)
+        {
+            // Arrange
+            IsCorruptedParser parser = new IsCorruptedParser();
+            int expected = testCase.Item.IsCorrupted;
+
+            // Act
+            int actual = parser.Parse(testCase.Xml);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
+
+        [Theory]
+        [ClassData(typeof(AffixModsParserTestData))]
+        public void Parse_ShouldReturnAffixModsFromItemXml(ItemXmlHelper testCase)
+        {
+            // Arrange
+            AffixModsParser parser = new AffixModsParser();
+            string expected = testCase.Item.AffixMods;
+
+            // Act
+            string actual = parser.Parse(testCase.Xml);
+
+            // Assert
+            Assert.Equal(expected, actual);
+        }
+
 
 
     }

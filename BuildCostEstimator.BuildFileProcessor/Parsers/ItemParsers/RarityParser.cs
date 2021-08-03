@@ -3,16 +3,16 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace BuildCostEstimator.BuildFileProcessor.Parsers
+namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
-    public class RarityParser : IParser<string>
+    public class RarityParser : StringParser
     {
         /// <summary>
         /// Parses XElement for rarity of item.
         /// </summary>
         /// <param name="element">XElement with item tag.</param>
         /// <returns>Rarity of item as string.</returns>
-        public string Parse(XElement element)
+        public override string Parse(XElement element)
         {
             var elementStrings = element.Value.Trim();
             var eleSplitByLine = elementStrings.Split("\n").Select(x => x.Trim()).ToArray();

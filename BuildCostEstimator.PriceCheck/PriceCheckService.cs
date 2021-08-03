@@ -33,6 +33,11 @@ namespace BuildCostEstimator.PriceCheck
 
         public async Task<Item> SinglePriceCheckAsync(Item item)
         {
+            if (item == null)
+            {
+                return new Item() { CostInChaos = 0 };
+            }
+
             if (item.Rarity == StaticDetails.Rare)
             {
                 return await RarePriceChecker.CheckPriceAsync(item);

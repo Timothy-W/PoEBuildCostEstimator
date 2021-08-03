@@ -4,14 +4,16 @@ using BuildCostEstimator.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BuildCostEstimator.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210721210825_AddedImplicitModsToItemModel")]
+    partial class AddedImplicitModsToItemModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,9 +53,6 @@ namespace BuildCostEstimator.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AffixMods")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("BaseType")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -67,9 +66,6 @@ namespace BuildCostEstimator.DataAccess.Migrations
 
                     b.Property<string>("Influences")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IsCorrupted")
-                        .HasColumnType("int");
 
                     b.Property<int>("ItemLevel")
                         .HasColumnType("int");

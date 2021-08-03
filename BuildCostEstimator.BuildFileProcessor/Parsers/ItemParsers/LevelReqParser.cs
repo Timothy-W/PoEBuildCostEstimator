@@ -6,16 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace BuildCostEstimator.BuildFileProcessor.Parsers
+namespace BuildCostEstimator.BuildFileProcessor.Parsers.ItemParsers
 {
-    public class LevelReqParser : IParser<int>
+    public class LevelReqParser : IntParser
     {
         /// <summary>
         /// Parses XElement for level requirement of item.
         /// </summary>
         /// <param name="element">XElement with item tag.</param>
         /// <returns>Level requirement of item as int.</returns>
-        public int Parse(XElement element)
+        public override int Parse(XElement element)
         {
             var elementStrings = element.Value.Trim();
             var eleSplitByLine = elementStrings.Split("\n").Select(x => x.Trim()).ToArray();
