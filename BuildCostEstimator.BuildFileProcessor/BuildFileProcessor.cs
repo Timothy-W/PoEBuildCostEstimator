@@ -24,10 +24,48 @@ namespace BuildCostEstimator.BuildFileProcessor
             _priceCheckService = priceCheckService;
         }
 
+        public async Task<Tuple<Build, List<ItemSet>>> ProcessBuildFullAsync()
+        {
+
+
+            var parseItemsTask = _xmlParser.ParseItemElementsToDictAsync();
+            var itemSetsTask = _xmlParser.ParseItemSetElementsToListAsync();
+            var parseBuildTask = _xmlParser.ParseBuildInfoAsync();
+
+            await Task.WhenAll(parseItemsTask, itemSetsTask, parseBuildTask);
+
+            var itemSetList = itemSetsTask.Result;
+            var itemList = parseItemsTask.Result;
+
+            foreach (var set in itemSetList)
+            {
+                foreach (var relationship in set.ItemSetRelationships)
+                {
+                    relationship.Item = await _priceCheckService.SinglePriceCheckAsync(itemList[relationship.ItemId]); // Using PobItemId for indexing
+                    //Price check here, need a better solution
+
+                    relationship.ItemSet = set;
+                }
+            }
+
+            // Process build info
+            var build = parseBuildTask.Result;
+
+            //build.ItemSets = itemSetList.ToHashSet();
+            var buildItemSets = itemSetList;
+
+            return Tuple.Create(build, buildItemSets);
+
+            
+        }
+
+
+
+        
         public async Task<Tuple<Build, List<ItemSet>>> ProcessBuildFull()
         {
             // Process items
-            var itemList = _xmlParser.ParseItemElementsToList();
+            var itemList = _xmlParser.ParseItemElementsToDict();
 
             // Process item sets
             var itemSetList = _xmlParser.ParseItemSetElementsToList();
@@ -36,9 +74,11 @@ namespace BuildCostEstimator.BuildFileProcessor
             {
                 foreach (var relationship in set.ItemSetRelationships)
                 {
-                    relationship.Item = await _priceCheckService.SinglePriceCheckAsync(itemList[relationship.ItemId]); // Using PobItemId for indexing
+                    relationship.Item =
+                        await _priceCheckService.SinglePriceCheckAsync(
+                            itemList[relationship.ItemId]); // Using PobItemId for indexing
                     //Price check here, need a better solution
-                    
+
                     relationship.ItemSet = set;
                 }
             }
@@ -50,9 +90,6 @@ namespace BuildCostEstimator.BuildFileProcessor
             var buildItemSets = itemSetList;
 
             return Tuple.Create(build, buildItemSets);
-
-
-
         }
 
 
