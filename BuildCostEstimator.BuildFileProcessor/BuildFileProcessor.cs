@@ -24,6 +24,7 @@ namespace BuildCostEstimator.BuildFileProcessor
             _priceCheckService = priceCheckService;
         }
 
+
         public async Task<Tuple<Build, List<ItemSet>>> ProcessBuildFullAsync()
         {
             //Using Async versions of these methods is too granular and much much slower
@@ -33,34 +34,29 @@ namespace BuildCostEstimator.BuildFileProcessor
 
             await Task.WhenAll(parseItemsTask, itemSetsTask, parseBuildTask);
 
-            var itemSetList = itemSetsTask.Result;
-            var itemList = parseItemsTask.Result;
+            var itemSetsInBuild = itemSetsTask.Result;
+            var itemsInBuild = parseItemsTask.Result;
 
-            foreach (var set in itemSetList)
+            var pricedItems = (List<Item>) await _priceCheckService.MultiplePriceCheckAsync(itemsInBuild.Values.ToList());
+
+            var itemDict = pricedItems.ToDictionary(x => x.PobItemId);
+
+            foreach (var set in itemSetsInBuild)
             {
                 foreach (var relationship in set.ItemSetRelationships)
                 {
-                    if (_priceCheckService != null)
-                    {
-                        relationship.Item =
-                            await _priceCheckService.SinglePriceCheckAsync(
-                                itemList[relationship.ItemId]); // Using PobItemId for indexing
-                        //Price check here, need a better solution
-                    }
-
+                    relationship.Item = itemDict[relationship.ItemId];
                     relationship.ItemSet = set;
                 }
             }
 
             // Process build info
             var build = parseBuildTask.Result;
-
-            //build.ItemSets = itemSetList.ToHashSet();
-            var buildItemSets = itemSetList;
-
-            return Tuple.Create(build, buildItemSets);
+            
+            return Tuple.Create(build, itemSetsInBuild);
         }
 
+        
         public async Task<Tuple<Build, List<ItemSet>>> ProcessBuildFull()
         {
             // Process items

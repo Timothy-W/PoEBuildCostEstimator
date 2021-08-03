@@ -249,9 +249,7 @@ namespace BuildCostEstimator.Areas.User.Controllers
             
             //Use BuildXmlParser here to retrieve items from the xml data
             var buildProcessor = new BuildFileProcessor.BuildFileProcessor(xmlXDoc, new PriceCheckService(_httpClientFactory, _memoryCache));
-            //Tuple<Build, List<ItemSet>> build = await buildProcessor.ProcessBuildFull();
             Tuple<Build, List<ItemSet>> build = await buildProcessor.ProcessBuildFullAsync();
-            
             
             return build;
         }
